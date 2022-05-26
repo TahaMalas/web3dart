@@ -88,6 +88,34 @@ class TupleType extends AbiType<List<dynamic>> {
     }
   }
 
+  Map<String, dynamic> decodeMap(ByteBuffer buffer, int offset) {
+    final Map<String, dynamic> decoded = {};
+    var headersLength = 0;
+
+    for (final type in types) {
+      if (type.encodingLength.isDynamic) {
+        final positionResult =
+        const UintType().decode(buffer, offset + headersLength);
+        headersLength += positionResult.bytesRead;
+
+        final position = positionResult.data.toInt();
+
+        final dataResult = type.decode(buffer, offset + position);
+        decoded.addAll({
+          type.name: dataResult.data,
+        });
+      } else {
+        final result = type.decode(buffer, offset + headersLength);
+        headersLength += result.bytesRead;
+        decoded.addAll({
+          type.name: result.data,
+        });
+      }
+    }
+
+    return decoded;
+  }
+
   @override
   DecodingResult<List> decode(ByteBuffer buffer, int offset) {
     final decoded = [];

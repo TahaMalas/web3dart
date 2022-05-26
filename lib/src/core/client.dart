@@ -366,7 +366,7 @@ class Web3Client {
   ///
   /// This function allows specifying a custom block mined in the past to get
   /// historical data. By default, [BlockNum.current] will be used.
-  Future<List<dynamic>> call({
+  Future<Map<String, dynamic>> call({
     EthereumAddress? sender,
     required DeployedContract contract,
     required ContractFunction function,

@@ -18,7 +18,7 @@ abstract class GeneratedContract {
     return bytesToHex(function.selector) == expected;
   }
 
-  Future<List<dynamic>> read(
+  Future<Map<String, dynamic>> read(
     ContractFunction function,
     List<dynamic> params,
     BlockNum? atBlock,
